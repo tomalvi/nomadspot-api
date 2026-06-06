@@ -1,0 +1,10 @@
+PARA RECOGER LOS DIFERENTES DATOS USARE===
+
+CLIMA:
+Open-Meteo API: Es la joya de la corona para desarrolladores de apps de viajes. Es 100% gratuita para uso no comercial (hasta 10.000 llamadas al día) y no te pide ni API Key.
+
+GEOGRAFICOS, FOTOS:
+GeoNames API: Una base de datos geográfica masiva y gratuita. Te da la población exacta de la ciudad, altitud, país, zona horaria y coordenadas. Esencial para que tu buscador funcione bien.
+
+TABLA TIEMPO - COUNTRY
+TABLA REGIONES
