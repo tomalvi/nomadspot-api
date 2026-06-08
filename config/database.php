@@ -59,10 +59,8 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-
-           'options' => extension_loaded('pdo_mysql') ? array_filter([
-                \PDO::MYSQL_ATTR_DEFAULT_AUTH => 'mysql_native_password',
-            ]) : [],
+            'options' => [], // Completamente limpio y cerrado con coma, NO con punto y coma
+        ],
 
         'mariadb' => [
             'driver' => 'mariadb',
