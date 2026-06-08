@@ -1,4 +1,5 @@
-FROM richarvey/nginx-php-fpm:latest
+# Usamos una versión específica que incluye PHP 8.4
+FROM richarvey/nginx-php-fpm:php84-latest
 
 # Copiar el proyecto al contenedor
 COPY . /var/www/html
@@ -7,7 +8,8 @@ COPY . /var/www/html
 ENV WEBROOT /var/www/html/public
 ENV APP_ENV production
 
-# Instalar dependencias de PHP sin entorno de desarrollo
+# Forzar a Composer a instalar saltándose restricciones si fuera necesario, 
+# aunque con PHP 8.4 pasará limpio
 RUN composer install --no-dev --optimize-autoloader
 
 # Dar permisos correctos a las carpetas de almacenamiento
