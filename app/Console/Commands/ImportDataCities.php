@@ -57,9 +57,9 @@ class ImportDataCities extends Command
 
     public function importCities()
     {
-        $topCities = json_decode(file_get_contents(base_path('database\assets\nomad_cities.json')), true);
-
-       foreach ($topCities as $city) {
+        $topCities = json_decode(file_get_contents(database_path('assets/nomad_cities.json')), true);
+        
+        foreach ($topCities as $city) {
             $cityLatLonData = Http::withoutVerifying()->get('https://nominatim.openstreetmap.org/search?city=' . $city["city"] . '&format=json&limit=1');
 
             if ($cityLatLonData->failed() || empty($cityLatLonData->json())) {
@@ -111,44 +111,6 @@ class ImportDataCities extends Command
             sleep(1);
         }
 
-        // foreach ($countries as $country) {
-        //     $response = Http::withoutVerifying()->post('https://countriesnow.space/api/v0.1/countries/population/cities/filter', [
-        //                    'country' => $country->name 
-        //             ]);
-
-        //     if ($response->failed()) {
-        //         $this->warn("Skipping $country - not found");
-        //         continue;
-        //     }
-
-        //     foreach ($response->json()["data"] as $data) {
-
-        //        $cityLatLonData = Http::withoutVerifying()->get('https://nominatim.openstreetmap.org/search?city=' . $data["city"] . '&format=json&limit=1');
-
-        //         if ($cityLatLonData->failed() || empty($cityLatLonData->json())) {
-        //             $this->warn("not found");
-        //             continue;
-        //         }
-                
-        //         $cityTimeZone = Http::withoutVerifying()->get('https://timeapi.io/api/v1/timezone/coordinate?latitude=' . $cityLatLonData->json()[0]["lat"] . '&longitude=' . $cityLatLonData->json()[0]["lon"]);
-
-        //         City::updateOrCreate(
-        //             [
-        //                 'name'          => $data["city"],
-        //                 'country_id'    => $country->id,
-        //                 'population'    => $data["populationCounts"][0]["value"] ?? 1,
-        //                 'weather_id'    => 1,
-        //                 'latitude'      => $cityLatLonData->json()[0]["lat"],
-        //                 'longitude'     => $cityLatLonData->json()[0]["lon"],
-        //                 'timezone'      => $cityTimeZone->json()["timezone"],
-        //                 'score_overall' => 1,
-        //                 'score_climate' => 1,
-        //                 'score_cost'    => 1
-        //             ]
-        //         );
-        //     }
-        // }
-    
         $this->info('Cities imported: ' . City::count());
     
     }
