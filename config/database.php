@@ -59,10 +59,10 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            
-            // Dejamos las opciones completamente vacías para que use los valores nativos limpios
-            'options' => [],
-        ],
+
+           'options' => extension_loaded('pdo_mysql') ? array_filter([
+                \PDO::MYSQL_ATTR_DEFAULT_AUTH => 'mysql_native_password',
+            ]) : [],
 
         'mariadb' => [
             'driver' => 'mariadb',
