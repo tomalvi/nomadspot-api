@@ -44,7 +44,7 @@ return [
             'transaction_mode' => 'DEFERRED',
         ],
 
-      'mysql' => [
+        'mysql' => [
             'driver' => 'mysql',
             'url' => null,
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -59,10 +59,9 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-                'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4',
-                1011 => 'mysql_native_password', 
-            ]) : [],
+            
+            // Dejamos las opciones completamente vacías para que use los valores nativos limpios
+            'options' => [],
         ],
 
         'mariadb' => [
