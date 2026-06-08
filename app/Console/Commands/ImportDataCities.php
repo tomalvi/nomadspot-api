@@ -11,6 +11,7 @@ use App\Models\Weather;
 use App\Http\Controllers\CountryController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 #[Signature('data:import')]
 #[Description('Command description')]
@@ -57,6 +58,13 @@ class ImportDataCities extends Command
 
     public function importCities()
     {
+            
+        DB::table('weather')->insertOrIgnore([
+            'id' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         $topCities = json_decode(file_get_contents(database_path('assets/nomad_cities.json')), true);
         
         foreach ($topCities as $city) {
