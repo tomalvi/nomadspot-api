@@ -1,16 +1,33 @@
-# Usamos una versión específica que incluye PHP 8.4
-FROM richarvey/nginx-php-fpm:php84-latest
+FROM php:8.4-apache
+
+# Instalar extensiones del sistema necesarias para Laravel y PostgreSQL
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    && docker-php-ext-install pdo pdo_pgsql zip
+
+# Habilitar el módulo rewrite de Apache (vital para las rutas de Laravel)
+RUN a2enmod rewrite
+
+# Cambiar el directorio raíz de Apache para que apunte a /public
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
+
+# Instalar Composer de forma global
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar el proyecto al contenedor
-COPY . /var/www/html
+WORKDIR /var/www/html
+COPY . .
 
-# Configurar el directorio raíz para Laravel
-ENV WEBROOT /var/www/html/public
-ENV APP_ENV production
-
-# Forzar a Composer a instalar saltándose restricciones si fuera necesario, 
-# aunque con PHP 8.4 pasará limpio
+# Instalar dependencias de producción
 RUN composer install --no-dev --optimize-autoloader
 
-# Dar permisos correctos a las carpetas de almacenamiento
-RUN chown -R nw:nw /var/www/html/storage /var/www/html/bootstrap/cache
+# Dar permisos a las carpetas de almacenamiento
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+EXPOSE 80
