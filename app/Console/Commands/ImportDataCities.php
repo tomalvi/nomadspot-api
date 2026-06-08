@@ -89,7 +89,7 @@ class ImportDataCities extends Command
                     return strtolower($item['city']) === strtolower($city['city']);
                 });
                 if ($match && !empty($match['populationCounts'])) {
-                    $populationValue = $match['populationCounts'][0]['value'];
+                    $populationValue = (int) round($match['populationCounts'][0]['value']);
                 }
             }
 
